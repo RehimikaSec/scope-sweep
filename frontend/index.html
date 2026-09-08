@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScopeSweep — OAuth Permission Detective</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◆</span>
+    <div>
+      <h1>ScopeSweep</h1>
+      <p class="tagline">Beat the model. Learn what an OAuth grant actually hands over.</p>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn active" data-tab="game">Play</button>
+    <button class="tab-btn" data-tab="leaderboard">Leaderboard</button>
+    <button class="tab-btn" data-tab="model">Model stats</button>
+    <button class="tab-btn" data-tab="assess">Assessment mode</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ============ GAME TAB ============ -->
+  <section id="tab-game" class="tab-panel active">
+
+    <div id="onboard" class="panel">
+      <h2>An app wants access to your school Google account.</h2>
+      <p class="lede">Every round shows a real permission request. Guess whether it's a
+        <strong>Low</strong>, <strong>Medium</strong>, or <strong>High</strong> risk grant before
+        a trained risk model reveals its own call — and the reasoning behind both.</p>
+      <div class="onboard-form">
+        <input id="playerNameInput" type="text" placeholder="Your name (optional)" maxlength="40">
+        <button id="startBtn" class="btn-primary">Start playing</button>
+      </div>
+    </div>
+
+    <div id="gameArea" class="panel hidden">
+      <div class="hud">
+        <div class="hud-stat"><span class="hud-label">Score</span><span id="hudScore" class="hud-val">0</span></div>
+        <div class="hud-stat"><span class="hud-label">Streak</span><span id="hudStreak" class="hud-val">0</span></div>
+        <div class="hud-stat"><span class="hud-label">Accuracy</span><span id="hudAccuracy" class="hud-val">—</span></div>
+        <div class="hud-stat"><span class="hud-label">Round</span><span id="hudRound" class="hud-val">0</span></div>
+      </div>
+
+      <div class="consent-card" id="consentCard">
+        <div class="consent-head">
+          <div class="app-icon" id="appIcon">A</div>
+          <div>
+            <div class="app-name" id="appName">—</div>
+            <div class="app-category" id="appCategory">—</div>
+          </div>
+        </div>
+        <p class="consent-sub">wants to access your account</p>
+        <ul class="scope-list" id="scopeList"></ul>
+      </div>
+
+      <div class="guess-row" id="guessRow">
+        <button class="guess-btn low" data-tier="Low">Low risk</button>
+        <button class="guess-btn medium" data-tier="Medium">Medium risk</button>
+        <button class="guess-btn high" data-tier="High">High risk</button>
+      </div>
+
+      <div id="resultPanel" class="result-panel hidden"></div>
+
+      <div class="next-row hidden" id="nextRow">
+        <button id="nextBtn" class="btn-primary">Next app →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LEADERBOARD TAB ============ -->
+  <section id="tab-leaderboard" class="tab-panel">
+    <div class="panel">
+      <h2>Leaderboard</h2>
+      <p class="lede">Top sessions this run. Restarting the server resets it — this is a local demo store, not an account system.</p>
+      <table class="lb-table" id="lbTable">
+        <thead><tr><th>#</th><th>Player</th><th>Score</th><th>Best streak</th><th>Accuracy</th><th>Rounds</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ MODEL STATS TAB ============ -->
+  <section id="tab-model" class="tab-panel">
+    <div class="panel">
+      <h2>What's actually inside the model</h2>
+      <p class="lede">A RandomForestClassifier trained on 10 engineered features from every scope
+        grant — not a black box. Held out from training data, so this accuracy is a measured number,
+        not a claim.</p>
+      <div class="model-stats-grid" id="modelStatsGrid"></div>
+      <h3 class="sub-head">Feature importance</h3>
+      <p class="lede small">What the model actually weighs when it makes a call.</p>
+      <div id="featureBars" class="feature-bars"></div>
+    </div>
+  </section>
+
+  <!-- ============ ASSESSMENT MODE TAB ============ -->
+  <section id="tab-assess" class="tab-panel">
+    <div class="panel">
+      <h2>Assessment mode</h2>
+      <p class="lede">The same model, repurposed as a real tool: paste a list of apps and the
+        scopes they've requested, and get back a ranked risk report — the workflow a school IT
+        coordinator could run against an actual authorized-apps export.</p>
+      <details class="scope-ref">
+        <summary>Reference: recognized scope IDs</summary>
+        <div id="scopeRefList" class="scope-ref-list"></div>
+      </details>
+      <textarea id="assessInput" class="assess-textarea" spellcheck="false"></textarea>
+      <div class="assess-actions">
+        <button id="loadSampleBtn" class="btn-secondary">Load sample district export</button>
+        <button id="runAssessBtn" class="btn-primary">Run assessment</button>
+      </div>
+      <div id="assessResults"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>ScopeSweep — a student project for a cybersecurity competition. Every app in this dataset is
+     a synthetic, generic archetype, not a real product. Sensitivity tiers follow Google's public
+     OAuth scope classification (recommended / sensitive / restricted).</p>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

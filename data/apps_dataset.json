@@ -1,0 +1,2186 @@
+[
+  {
+    "id": "app-019",
+    "name": "SunnyComet",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "calendar.readonly",
+      "drive.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 56.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Video Conferencing' app typically needs: drive.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-102",
+    "name": "CalmHarbor",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "contacts",
+      "drive.file",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 72.0,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Classroom Management Tool' app typically needs: contacts."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-108",
+    "name": "SunnyComet",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-033",
+    "name": "CuriousMeadow",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "classroom.student-submissions.students.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 61.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-027",
+    "name": "CuriousBeacon",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "admin.directory.user.readonly",
+      "drive.file",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 72.0,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Digital Whiteboard' app typically needs: admin.directory.user.readonly, gmail.send.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can enumerate every user in the school domain and send email as the requesting account -- a mass-impersonation risk."
+    ]
+  },
+  {
+    "id": "app-109",
+    "name": "BriskSparrow",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "admin.directory.user.readonly",
+      "calendar.events",
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "contacts",
+      "drive.file",
+      "gmail.send",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 80.9,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 3 scope(s) outside what a 'Classroom Management Tool' app typically needs: admin.directory.user.readonly, contacts, gmail.send.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can enumerate every user in the school domain and send email as the requesting account -- a mass-impersonation risk."
+    ]
+  },
+  {
+    "id": "app-066",
+    "name": "BoldBeacon",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "contacts.readonly",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 53.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can harvest the user's contact list and silently send email as them -- a textbook spam or phishing pipeline, even though each scope alone looks tame."
+    ]
+  },
+  {
+    "id": "app-096",
+    "name": "SharpComet",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "classroom.courses.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-050",
+    "name": "NimbleFox",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 12.6,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-106",
+    "name": "KindFox",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 50.8,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-011",
+    "name": "GentleBeacon",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "calendar.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-005",
+    "name": "SharpPine",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-004",
+    "name": "BriskRiver",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "gmail.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 64.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Flashcard / Quiz Tool' app typically needs: gmail.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-082",
+    "name": "CalmFox",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "contacts",
+      "drive",
+      "drive.file",
+      "forms.body",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 75.4,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Survey / Forms Tool' app typically needs: contacts, drive."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-007",
+    "name": "BriskRiver",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 40.0,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-104",
+    "name": "NimbleFox",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.file",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 50.8,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-103",
+    "name": "BriskEmber",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-003",
+    "name": "VividMaple",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 40.0,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-084",
+    "name": "LivelySparrow",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "forms.body",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-015",
+    "name": "LivelyCedar",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 38.8,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-053",
+    "name": "CleverComet",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.rosters.readonly",
+      "contacts",
+      "drive.readonly",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 72.2,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Attendance Tracker' app typically needs: contacts, drive.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-097",
+    "name": "VividHarbor",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 38.8,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-028",
+    "name": "SteadyCedar",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "admin.directory.user.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 64.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Digital Whiteboard' app typically needs: admin.directory.user.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-041",
+    "name": "LivelyBeacon",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "classroom.rosters.readonly",
+      "contacts.readonly",
+      "drive",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 75.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 3 scope(s) outside what a 'Reading / Library App' app typically needs: classroom.rosters.readonly, contacts.readonly, drive.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can see which students are in a class AND move/export/share any file in Drive -- a plausible path to exfiltrating student records."
+    ]
+  },
+  {
+    "id": "app-031",
+    "name": "BriskOtter",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 44.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-061",
+    "name": "CuriousComet",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "contacts.readonly",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 53.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can harvest the user's contact list and silently send email as them -- a textbook spam or phishing pipeline, even though each scope alone looks tame."
+    ]
+  },
+  {
+    "id": "app-052",
+    "name": "CleverWillow",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.readonly",
+      "gmail.send",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 65.9,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Attendance Tracker' app typically needs: drive.readonly, gmail.send."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-079",
+    "name": "LivelyMeadow",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 48.3,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'STEM Simulation Tool' app typically needs: gmail.send."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-064",
+    "name": "CuriousFalcon",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 38.8,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-024",
+    "name": "LivelyRiver",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "admin.directory.user.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 64.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Digital Whiteboard' app typically needs: admin.directory.user.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-008",
+    "name": "CleverOtter",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 48.3,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Flashcard / Quiz Tool' app typically needs: gmail.send."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-075",
+    "name": "QuickOrbit",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 12.6,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-013",
+    "name": "VividSparrow",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.readonly",
+      "drive.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 52.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Video Conferencing' app typically needs: drive.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-034",
+    "name": "VividCedar",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 44.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-001",
+    "name": "SunnyComet",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-036",
+    "name": "BriskMeadow",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "classroom.student-submissions.students.readonly",
+      "contacts",
+      "drive",
+      "gmail.send",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 80.7,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 3 scope(s) outside what a 'Gradebook / LMS Sync' app typically needs: contacts, drive, gmail.send.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can see which students are in a class AND move/export/share any file in Drive -- a plausible path to exfiltrating student records."
+    ]
+  },
+  {
+    "id": "app-038",
+    "name": "KindMaple",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive",
+      "gmail.send",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 74.4,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Gradebook / LMS Sync' app typically needs: drive, gmail.send.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can see which students are in a class AND move/export/share any file in Drive -- a plausible path to exfiltrating student records."
+    ]
+  },
+  {
+    "id": "app-058",
+    "name": "CuriousRiver",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 50.0,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-086",
+    "name": "NimbleFox",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "forms.body",
+      "gmail.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 65.9,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Survey / Forms Tool' app typically needs: gmail.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-017",
+    "name": "GentleHarbor",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.readonly",
+      "drive.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 52.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Video Conferencing' app typically needs: drive.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-072",
+    "name": "CalmMaple",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 12.6,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-078",
+    "name": "BriskMaple",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 12.6,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-046",
+    "name": "CleverRiver",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-012",
+    "name": "CuriousSparrow",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "calendar.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-021",
+    "name": "BriskOtter",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-099",
+    "name": "BrightFalcon",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "admin.directory.user.readonly",
+      "calendar.events",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 66.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Tutoring Platform' app typically needs: admin.directory.user.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-100",
+    "name": "CalmPine",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "classroom.courses.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-022",
+    "name": "KindMeadow",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-025",
+    "name": "NimbleHarbor",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "drive",
+      "drive.file",
+      "gmail.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 73.0,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Digital Whiteboard' app typically needs: drive, gmail.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-043",
+    "name": "QuickHarbor",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-110",
+    "name": "BriskFox",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-037",
+    "name": "SunnyOtter",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "classroom.student-submissions.students.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 61.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-030",
+    "name": "BoldBeacon",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "admin.directory.user.readonly",
+      "drive",
+      "drive.file",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 77.7,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 3 scope(s) outside what a 'Digital Whiteboard' app typically needs: admin.directory.user.readonly, drive, gmail.send.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can enumerate every user in the school domain and send email as the requesting account -- a mass-impersonation risk."
+    ]
+  },
+  {
+    "id": "app-107",
+    "name": "GentleFox",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "admin.directory.user.readonly",
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.file",
+      "gmail.send",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 75.9,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Classroom Management Tool' app typically needs: admin.directory.user.readonly, gmail.send.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can enumerate every user in the school domain and send email as the requesting account -- a mass-impersonation risk."
+    ]
+  },
+  {
+    "id": "app-068",
+    "name": "BrightComet",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "contacts.readonly",
+      "gmail.modify",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 71.2,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Parent Communication App' app typically needs: gmail.modify.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can harvest the user's contact list and silently send email as them -- a textbook spam or phishing pipeline, even though each scope alone looks tame."
+    ]
+  },
+  {
+    "id": "app-029",
+    "name": "BoldMeadow",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-057",
+    "name": "QuickOrbit",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "contacts",
+      "drive.readonly",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 73.7,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Attendance Tracker' app typically needs: contacts, drive.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-018",
+    "name": "VividMeadow",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "calendar.readonly",
+      "contacts",
+      "drive.readonly",
+      "gmail.modify",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 77.9,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 3 scope(s) outside what a 'Video Conferencing' app typically needs: contacts, drive.readonly, gmail.modify."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-091",
+    "name": "SharpOrbit",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "contacts",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 66.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Tutoring Platform' app typically needs: contacts."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-071",
+    "name": "SunnyBeacon",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-080",
+    "name": "BriskFalcon",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "classroom.rosters.readonly",
+      "contacts",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 69.1,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'STEM Simulation Tool' app typically needs: classroom.rosters.readonly, contacts."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-093",
+    "name": "CalmWillow",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 38.8,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-095",
+    "name": "SteadyOrbit",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "classroom.courses.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-042",
+    "name": "NimblePine",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-070",
+    "name": "SharpOtter",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "drive",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 66.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Parent Communication App' app typically needs: drive."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-105",
+    "name": "BoldPine",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.file",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 55.2,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-060",
+    "name": "CalmRiver",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "gmail.send",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 55.9,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Attendance Tracker' app typically needs: gmail.send."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-062",
+    "name": "QuickOtter",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "drive",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 66.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Parent Communication App' app typically needs: drive."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-101",
+    "name": "CuriousPine",
+    "category": "Classroom Management Tool",
+    "description": "A classroom management tool used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.file",
+      "gmail.send",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 60.0,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Classroom Management Tool' app typically needs: gmail.send."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-035",
+    "name": "GentleWillow",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 44.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-067",
+    "name": "SunnyBeacon",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "contacts.readonly",
+      "gmail.modify",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 71.2,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Parent Communication App' app typically needs: gmail.modify.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can harvest the user's contact list and silently send email as them -- a textbook spam or phishing pipeline, even though each scope alone looks tame."
+    ]
+  },
+  {
+    "id": "app-023",
+    "name": "BrightWillow",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-094",
+    "name": "CuriousHarbor",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "classroom.courses.readonly",
+      "contacts",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 68.4,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Tutoring Platform' app typically needs: contacts."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-020",
+    "name": "NimbleWillow",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "calendar.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 48.9,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Video Conferencing' app typically needs: drive.file."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-059",
+    "name": "CuriousMeadow",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.rosters.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 37.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-047",
+    "name": "SharpCedar",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "gmail.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 63.9,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Reading / Library App' app typically needs: gmail.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-056",
+    "name": "KindBeacon",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 50.0,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-098",
+    "name": "BoldCedar",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "classroom.courses.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-063",
+    "name": "CalmFalcon",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "gmail.modify",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 66.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Parent Communication App' app typically needs: gmail.modify."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-054",
+    "name": "QuickFox",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.rosters.readonly",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 44.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-002",
+    "name": "BrightFox",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 48.3,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Flashcard / Quiz Tool' app typically needs: gmail.send."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-044",
+    "name": "BoldCedar",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "contacts.readonly",
+      "drive",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 69.1,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Reading / Library App' app typically needs: contacts.readonly, drive."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-083",
+    "name": "KindHarbor",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "drive",
+      "drive.file",
+      "forms.body",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 68.4,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Survey / Forms Tool' app typically needs: drive."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-065",
+    "name": "SunnyWillow",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "gmail.modify",
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 66.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Parent Communication App' app typically needs: gmail.modify."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-009",
+    "name": "SharpOtter",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "drive",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 64.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Flashcard / Quiz Tool' app typically needs: drive."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-048",
+    "name": "SunnyFox",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "contacts.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 47.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Reading / Library App' app typically needs: contacts.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-085",
+    "name": "SteadyOtter",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "forms.body",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-055",
+    "name": "NimbleOrbit",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "drive.readonly",
+      "gmail.send",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 63.4,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Attendance Tracker' app typically needs: drive.readonly, gmail.send."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-069",
+    "name": "LivelyWillow",
+    "category": "Parent Communication App",
+    "description": "A parent communication app used in K-12 classrooms.",
+    "scopes": [
+      "gmail.send",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 38.8,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-045",
+    "name": "SunnyBeacon",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 12.6,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-006",
+    "name": "SteadyOtter",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 40.0,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-073",
+    "name": "CalmOtter",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "contacts",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 64.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'STEM Simulation Tool' app typically needs: contacts."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-016",
+    "name": "QuickMaple",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "calendar.readonly",
+      "contacts",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 68.4,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Video Conferencing' app typically needs: contacts."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-077",
+    "name": "SteadyPine",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-088",
+    "name": "NimbleWillow",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "forms.body",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 37.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-039",
+    "name": "SunnyCedar",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "classroom.student-submissions.students.readonly",
+      "drive",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 73.8,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Gradebook / LMS Sync' app typically needs: drive.",
+      "1 dangerous scope combination(s) detected."
+    ],
+    "tripped_combos": [
+      "Can see which students are in a class AND move/export/share any file in Drive -- a plausible path to exfiltrating student records."
+    ]
+  },
+  {
+    "id": "app-090",
+    "name": "GentleMeadow",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "contacts",
+      "drive.file",
+      "forms.body",
+      "gmail.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 74.1,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Survey / Forms Tool' app typically needs: contacts, gmail.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-014",
+    "name": "BoldWillow",
+    "category": "Video Conferencing",
+    "description": "A video conferencing used in K-12 classrooms.",
+    "scopes": [
+      "calendar.events",
+      "calendar.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 45.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-032",
+    "name": "LivelyComet",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "classroom.student-submissions.students.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 61.5,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-081",
+    "name": "CuriousMeadow",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "contacts",
+      "drive",
+      "forms.body",
+      "gmail.readonly",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 79.7,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 3 scope(s) outside what a 'Survey / Forms Tool' app typically needs: contacts, drive, gmail.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-089",
+    "name": "SharpMeadow",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "contacts",
+      "forms.body",
+      "gmail.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 73.9,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 2 scope(s) outside what a 'Survey / Forms Tool' app typically needs: contacts, gmail.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-076",
+    "name": "CuriousFox",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 12.6,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-010",
+    "name": "QuickBeacon",
+    "category": "Flashcard / Quiz Tool",
+    "description": "A flashcard / quiz tool used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 40.0,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-026",
+    "name": "SharpRiver",
+    "category": "Digital Whiteboard",
+    "description": "A digital whiteboard used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 15.1,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-092",
+    "name": "NimbleSparrow",
+    "category": "Tutoring Platform",
+    "description": "A tutoring platform used in K-12 classrooms.",
+    "scopes": [
+      "admin.directory.user.readonly",
+      "calendar.events",
+      "classroom.courses.readonly",
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 68.4,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Tutoring Platform' app typically needs: admin.directory.user.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-051",
+    "name": "GentleBeacon",
+    "category": "Attendance Tracker",
+    "description": "A attendance tracker used in K-12 classrooms.",
+    "scopes": [
+      "classroom.rosters.readonly",
+      "openid",
+      "spreadsheets",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 44.4,
+    "ground_truth_tier": "Medium",
+    "reasons": [
+      "Most sensitive scope requested has weight 3 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-049",
+    "name": "BrightFox",
+    "category": "Reading / Library App",
+    "description": "A reading / library app used in K-12 classrooms.",
+    "scopes": [
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 12.6,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-087",
+    "name": "BoldWillow",
+    "category": "Survey / Forms Tool",
+    "description": "A survey / forms tool used in K-12 classrooms.",
+    "scopes": [
+      "drive.file",
+      "forms.body",
+      "gmail.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 66.3,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Survey / Forms Tool' app typically needs: gmail.readonly."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-074",
+    "name": "CleverWillow",
+    "category": "STEM Simulation Tool",
+    "description": "A stem simulation tool used in K-12 classrooms.",
+    "scopes": [
+      "openid",
+      "userinfo.email",
+      "userinfo.profile"
+    ],
+    "ground_truth_score": 12.6,
+    "ground_truth_tier": "Low",
+    "reasons": [
+      "Most sensitive scope requested has weight 1 (tier scale: recommended=1, sensitive=3, restricted=6)."
+    ],
+    "tripped_combos": []
+  },
+  {
+    "id": "app-040",
+    "name": "SteadyPine",
+    "category": "Gradebook / LMS Sync",
+    "description": "A gradebook / lms sync used in K-12 classrooms.",
+    "scopes": [
+      "classroom.courses.readonly",
+      "classroom.rosters.readonly",
+      "classroom.student-submissions.students.readonly",
+      "gmail.readonly",
+      "openid",
+      "userinfo.email"
+    ],
+    "ground_truth_score": 71.4,
+    "ground_truth_tier": "High",
+    "reasons": [
+      "Most sensitive scope requested has weight 6 (tier scale: recommended=1, sensitive=3, restricted=6).",
+      "Requests 1 scope(s) outside what a 'Gradebook / LMS Sync' app typically needs: gmail.readonly."
+    ],
+    "tripped_combos": []
+  }
+]
