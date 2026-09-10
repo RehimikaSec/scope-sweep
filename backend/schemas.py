@@ -22,6 +22,8 @@ class GuessRequest(BaseModel):
     session_id: str
     app_id: str
     guess_tier: str  # "Low" | "Medium" | "High"
+    mode: str = "practice"          # "practice" | "sweep"
+    sweep_date: str | None = None   # set when mode == "sweep"
 
 
 class GuessResponse(BaseModel):

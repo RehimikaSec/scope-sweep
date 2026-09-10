@@ -1,71 +1,100 @@
 # ScopeSweep — 4-minute judge demo script
 
 Run `uvicorn backend.app:app` before you're called up, and have
-`http://127.0.0.1:8000` already open. Everything below runs fully offline.
+`http://127.0.0.1:8000` already open on the landing screen. Everything below
+runs fully offline. If you've already played today's sweep in rehearsal,
+either play it again for the demo (fine — the model's calls don't change)
+or lean on Practice Mode for the live rounds and describe the Sweep instead.
 
 ## 1. The hook (30 seconds)
 
-> "The average school district has hundreds of EdTech apps with a green
-> checkmark on a teacher's Google account, and most of those checkmarks
-> got clicked on a Tuesday afternoon during lesson prep — not by anyone
-> thinking about what the app can actually see. ScopeSweep is a game that
-> teaches people to read an OAuth consent screen like a security analyst
-> would, and it's backed by a real machine learning model, not a script
-> that just repeats a hardcoded answer."
+Point at the landing screen before clicking anything.
 
-## 2. Play two rounds live (60 seconds)
+> "You're the newest — and only — app reviewer for a school district of
+> 4,200 students. Your predecessor rubber-stamped every OAuth request that
+> landed on their desk, and some of those apps can now read or send email
+> as any student. Today's queue has 10 requests. A trained risk model has
+> already made its own call on each one — I don't get to see it until
+> after I commit to mine."
 
-- Enter a name, click **Start playing**.
-- Round 1: pick an obviously-safe-looking app (few, low-tier scopes).
-  Guess **Low**. Show the reveal: ground truth, model's call, probability
-  bars, and the plain-language reasons.
-- Round 2: pick a round where the app requests a scope combination that
-  trips a dangerous-combo flag (or just keep clicking Next until one comes
-  up — roughly 1 in 9 apps trips one). Point at the combo warning box:
-  *"individually these two scopes look tame — together they're a spam
-  pipeline."*
+## 2. Play the Daily Sweep live (75 seconds)
 
-## 3. Prove the AI is real (60 seconds)
+- Click **Start today's sweep**. Point at the progress bar and the "vs.
+  Model" counter in the HUD before guessing.
+- Round 1: pick an app with few, low-tier scopes. Guess **Low**. Show the
+  reveal — ground truth, model's call, probability bars, plain-language
+  reasons.
+- Keep clicking through a few more rounds until one trips a dangerous-combo
+  warning (roughly 1 in 9 apps). Point at it: *"individually these two
+  scopes look tame — together they're a spam or impersonation pipeline,
+  and the model still weighs that correctly."*
+- Finish the sweep (or skip ahead if time is short — judges respond well
+  to seeing the **recap screen** regardless of the exact score). If you
+  land a perfect 10/10, the confetti and badge unlock happen live — let it
+  play out, it's a genuine payoff moment, not a scripted animation.
 
-- Click the **Model stats** tab.
-- Point at held-out accuracy and say it plainly: *"this is a held-out test
-  score, not a number I picked — the model never saw these examples during
+## 3. Point at why this isn't a one-play game (45 seconds)
+
+On the recap screen:
+
+> "This result — Day #3, 8 out of 10 — is copyable and shareable, the same
+> mechanic Wordle uses. Everyone who plays today gets the exact same 10
+> apps, seeded from today's date server-side, so scores are actually
+> comparable. Tomorrow it's a new queue. That's not decoration — it's the
+> actual reason someone opens this app twice."
+
+Click into the **Humans vs. AI** tab.
+
+> "Every guess anyone has ever made across every session gets tallied here
+> — live. This is the actual data pipeline this whole project is built
+> around: gamification isn't just a teaching device, it's how we'd collect
+> real human-labeled judgments to eventually retrain the model past the
+> hand-written rule it started from."
+
+## 4. Prove the AI is real (45 seconds)
+
+- Click **Model stats**.
+- Point at held-out accuracy plainly: *"this is a held-out test score, not
+  a number I picked — the model never saw these examples during
   training."*
-- Point at the feature importance bars: *"the model leans hardest on the
-  most-sensitive-scope-requested and the total sensitivity weight — which
-  is exactly what a security reviewer would look at first, except this
-  model learned that ranking from data instead of me hand-coding it."*
+- Point at feature importance: *"the model leans hardest on the most-
+  sensitive-scope-requested and total sensitivity weight — exactly what a
+  security reviewer would check first, except this model learned that
+  ranking from data instead of me hand-coding it."*
 
-## 4. Show it's also a real tool (60 seconds)
+## 5. Show it's also a real tool (30 seconds)
 
 - Click **Assessment mode** → **Load sample district export** → **Run
   assessment**.
-- *"This is the exact same model, pointed at a plain list of apps and
-  scopes instead of one game round at a time. A school's one IT person
-  could paste their district's actual authorized-app list in here and get
-  a ranked triage list back in under a second — which is the real tool
-  this game is secretly also building."*
+- *"Same model, pointed at a plain list of apps and scopes instead of one
+  game round at a time. A school's one IT person could paste their
+  district's actual authorized-app list in here and get a ranked triage
+  list back in under a second."*
 
-## 5. Close on the honest, ambitious part (30 seconds)
+## 6. Close (15 seconds)
 
-> "Every guess anyone makes in this game gets logged — the ground truth,
-> the model's call, and the human's call, all three. That log is the raw
-> material for retraining this model on real human judgment instead of the
-> hand-written rule it started from — that's `scripts/analyze_guesses.py`
-> in the repo. That's the actual reason we gamified this instead of just
-> shipping a scanner: the game *is* the data collection strategy."
+> "Three things had to be true for this to be worth building: the AI had
+> to be real and auditable, the game had to give people an actual reason
+> to come back, and the same system had to double as something a real
+> understaffed IT department could use today. All three are true, and
+> you've just watched all three."
 
 ## Anticipated judge questions
 
-- **"Isn't the model just learning your rule back?"** — Yes, and we say so
-  in the README. It's trained on engineered features, never on the rule's
-  own output, so held-out accuracy demonstrates real generalization to
-  unseen feature combinations — but we're upfront that the next real step
-  is retraining on human-labeled data from gameplay, not pretending this
-  is finished.
+- **"Isn't the model just learning your rule back?"** — Yes, and the
+  README says so directly. It's trained on engineered features, never on
+  the rule's own output, so held-out accuracy demonstrates real
+  generalization to unseen feature combinations — but we're upfront that
+  the next real step is retraining on human-labeled data from gameplay
+  (the Humans vs. AI log), not pretending this is finished.
+- **"Is the Daily Sweep actually the same for everyone, or does it look
+  that way?"** — It's deterministic from the calendar date server-side
+  (`random.Random(date.isoformat())`), and `tests/test_api.py` has a test
+  asserting two separate calls on the same day return identical rounds in
+  identical order — that's not a client-side illusion.
 - **"Is any of this real user or student data?"** — No. Every app is
   synthetic and procedurally generated. The scope catalog and sensitivity
-  tiers are Google's real public documentation; the apps that request them
+  tiers are Google's real public documentation; the apps requesting them
   are not real products.
 - **"How would this actually get used by a school?"** — Assessment Mode is
   the deployment path: point it at a real Admin SDK export (a scoped v2

@@ -23,6 +23,7 @@ Then open  http://127.0.0.1:8000/
 
 from __future__ import annotations
 import random
+from datetime import date
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -55,6 +56,10 @@ FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
 # doesn't repeat until the pool is exhausted. Session state that matters
 # (score, streak, guess log) lives in SQLite; this is just round-shuffling.
 _SESSION_SEEN: dict[str, set[str]] = {}
+
+# Day 1 of the Daily Sweep. Day number shown to players counts up from here.
+SWEEP_EPOCH = date(2026, 9, 10)
+SWEEP_SIZE = 10
 
 
 def _scope_detail(scope_id: str) -> dict:
@@ -127,6 +132,8 @@ def submit_guess(req: GuessRequest):
         ground_truth_tier=app_row["ground_truth_tier"],
         model_tier=prediction.tier,
         model_score=prediction.score_0_100,
+        mode=req.mode,
+        sweep_date=req.sweep_date,
     )
 
     return {
@@ -148,6 +155,38 @@ def submit_guess(req: GuessRequest):
 @app.get("/api/leaderboard")
 def get_leaderboard(limit: int = 10):
     return {"entries": game_state.leaderboard(limit)}
+
+
+@app.get("/api/sweep/today")
+def sweep_today():
+    """The Daily Sweep: a fixed set of 10 apps, deterministically chosen from
+    today's calendar date, so every player sees the exact same 10 rounds in
+    the exact same order on a given day -- the whole reason it's shareable
+    and comparable, the same trick behind Wordle's daily puzzle.
+    """
+    model = get_model()
+    today = date.today()
+    day_number = (today - SWEEP_EPOCH).days + 1
+    rng = random.Random(today.isoformat())
+    chosen = rng.sample(model.apps, k=min(SWEEP_SIZE, len(model.apps)))
+
+    rounds = [{
+        "app_id": a["id"],
+        "name": a["name"],
+        "category": a["category"],
+        "description": a["description"],
+        "scopes": [_scope_detail(s) for s in a["scopes"]],
+    } for a in chosen]
+
+    return {"date": today.isoformat(), "day_number": max(day_number, 1), "rounds": rounds}
+
+
+@app.get("/api/community-stats")
+def community_stats():
+    """The live, growing 'humans vs. the model' scoreboard -- built from
+    every guess anyone has ever logged, not a static claim.
+    """
+    return game_state.community_stats()
 
 
 @app.get("/api/model/stats")

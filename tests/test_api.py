@@ -108,3 +108,50 @@ def test_index_serves_frontend(client):
     r = client.get("/")
     assert r.status_code == 200
     assert "ScopeSweep" in r.text
+
+
+def test_sweep_today_is_deterministic_and_shareable(client):
+    r1 = client.get("/api/sweep/today")
+    r2 = client.get("/api/sweep/today")
+    assert r1.status_code == 200
+    d1, d2 = r1.json(), r2.json()
+    assert d1["date"] == d2["date"]
+    assert d1["day_number"] == d2["day_number"]
+    assert d1["day_number"] >= 1
+    assert len(d1["rounds"]) == 10
+    # Same date -> same 10 apps in the same order for everyone who plays today.
+    assert [r["app_id"] for r in d1["rounds"]] == [r["app_id"] for r in d2["rounds"]]
+
+
+def test_sweep_guess_is_tagged_with_mode_and_date(client):
+    sweep = client.get("/api/sweep/today").json()
+    session_id = client.post("/api/session", json={"player_name": "Sweeper"}).json()["session_id"]
+    app_id = sweep["rounds"][0]["app_id"]
+
+    r = client.post("/api/guess", json={
+        "session_id": session_id, "app_id": app_id, "guess_tier": "Medium",
+        "mode": "sweep", "sweep_date": sweep["date"],
+    })
+    assert r.status_code == 200
+
+
+def test_community_stats_empty_before_any_guesses(client):
+    r = client.get("/api/community-stats")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["total_guesses"] == 0
+    assert data["human_accuracy"] is None
+
+
+def test_community_stats_aggregates_after_guesses(client):
+    session_id = client.post("/api/session", json={"player_name": "Alice"}).json()["session_id"]
+    round_data = client.get("/api/round", params={"session_id": session_id}).json()
+    client.post("/api/guess", json={
+        "session_id": session_id, "app_id": round_data["app_id"], "guess_tier": "Low",
+    })
+
+    r = client.get("/api/community-stats")
+    data = r.json()
+    assert data["total_guesses"] == 1
+    assert data["human_accuracy"] in (0.0, 1.0)
+    assert data["human_wins"] + data["model_wins"] + data["ties"] == 1

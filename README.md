@@ -22,6 +22,16 @@ The obvious, weak version of "gamified AI security education" is a chatbot that 
 
 ---
 
+## Why anyone plays, and why they come back
+
+A demo that only proves the mechanics work isn't the same as a game people actually want to open. Three deliberate hooks:
+
+- **A premise, not just a mechanic.** You're framed as the newest — and only — app reviewer for a school district that's been rubber-stamping OAuth requests for years. The stakes (student data, a real risk model watching your calls) are stated up front on the landing screen, not left implicit in a quiz UI.
+- **The Daily Sweep — a reason to come back tomorrow.** `GET /api/sweep/today` deterministically seeds the same 10 apps for every player on a given calendar date (`random.Random(date.isoformat())`, the same trick behind Wordle's daily puzzle). A completed sweep ends in a shareable result — `ScopeSweep Day #3 — 8/10 🟩🟩🟥🟩...` — copyable straight to a clipboard, comparable with classmates, and gone by tomorrow, which is the actual retention mechanism: nothing to fall back on if you don't return.
+- **A live Human-vs-Model scoreboard, and achievement badges.** The "Humans vs. AI" tab (`GET /api/community-stats`) aggregates *every* guess anyone has ever logged into a running head-to-head record — a visible, growing number, not a one-time claim. Five badges (Perfect Sweep, AI Slayer for out-scoring the model in a sweep, Combo Hunter, On Fire, Streak Keeper for a 3-day sweep streak) persist per-browser in `localStorage` and unlock with a toast + a confetti burst on a perfect sweep, giving a reason to keep playing past round one.
+
+---
+
 ## Quickstart
 
 ```bash

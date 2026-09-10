@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS guesses (
     model_score REAL NOT NULL,
     is_correct INTEGER NOT NULL,
     model_agreed_with_truth INTEGER NOT NULL,
+    mode TEXT NOT NULL DEFAULT 'practice',
+    sweep_date TEXT,
     created_at TEXT NOT NULL,
     FOREIGN KEY(session_id) REFERENCES sessions(id)
 );
@@ -54,6 +56,13 @@ def _connect() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    # Lightweight migration for DBs created before mode/sweep_date existed --
+    # SQLite has no "ADD COLUMN IF NOT EXISTS", so we probe and ignore.
+    existing_cols = {row["name"] for row in conn.execute("PRAGMA table_info(guesses)")}
+    if "mode" not in existing_cols:
+        conn.execute("ALTER TABLE guesses ADD COLUMN mode TEXT NOT NULL DEFAULT 'practice'")
+    if "sweep_date" not in existing_cols:
+        conn.execute("ALTER TABLE guesses ADD COLUMN sweep_date TEXT")
     return conn
 
 
@@ -81,7 +90,8 @@ def get_session(session_id: str) -> dict | None:
 
 
 def record_guess(session_id: str, app_id: str, category: str, guess_tier: str,
-                  ground_truth_tier: str, model_tier: str, model_score: float) -> dict:
+                  ground_truth_tier: str, model_tier: str, model_score: float,
+                  mode: str = "practice", sweep_date: str | None = None) -> dict:
     is_correct = int(guess_tier == ground_truth_tier)
     model_agreed = int(model_tier == ground_truth_tier)
 
@@ -90,10 +100,11 @@ def record_guess(session_id: str, app_id: str, category: str, guess_tier: str,
         conn.execute(
             """INSERT INTO guesses
                (session_id, app_id, category, guess_tier, ground_truth_tier,
-                model_tier, model_score, is_correct, model_agreed_with_truth, created_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                model_tier, model_score, is_correct, model_agreed_with_truth,
+                mode, sweep_date, created_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (session_id, app_id, category, guess_tier, ground_truth_tier,
-             model_tier, model_score, is_correct, model_agreed, _now()),
+             model_tier, model_score, is_correct, model_agreed, mode, sweep_date, _now()),
         )
         session = conn.execute("SELECT * FROM sessions WHERE id = ?", (session_id,)).fetchone()
         if session is None:
@@ -142,3 +153,58 @@ def all_guesses() -> list[dict]:
     rows = conn.execute("SELECT * FROM guesses ORDER BY created_at").fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+
+def community_stats() -> dict:
+    """Aggregate, across every guess ever logged by anyone, the live
+    'humans vs. the model' record this project's whole AI pitch rests on --
+    not a claim, a number anyone can watch update as more people play.
+    """
+    conn = _connect()
+    total = conn.execute("SELECT COUNT(*) AS n FROM guesses").fetchone()["n"]
+    if total == 0:
+        conn.close()
+        return {
+            "total_guesses": 0, "human_accuracy": None, "model_accuracy": None,
+            "human_wins": 0, "model_wins": 0, "ties": 0, "most_disputed_apps": [],
+        }
+
+    human_correct = conn.execute(
+        "SELECT COUNT(*) AS n FROM guesses WHERE is_correct = 1"
+    ).fetchone()["n"]
+    model_correct = conn.execute(
+        "SELECT COUNT(*) AS n FROM guesses WHERE model_agreed_with_truth = 1"
+    ).fetchone()["n"]
+
+    # Head-to-head: for each guess, did the human get it right where the
+    # model didn't (human win), the reverse (model win), or did they match?
+    human_wins = conn.execute(
+        "SELECT COUNT(*) AS n FROM guesses WHERE is_correct = 1 AND model_agreed_with_truth = 0"
+    ).fetchone()["n"]
+    model_wins = conn.execute(
+        "SELECT COUNT(*) AS n FROM guesses WHERE is_correct = 0 AND model_agreed_with_truth = 1"
+    ).fetchone()["n"]
+    ties = total - human_wins - model_wins
+
+    # Apps where players most often disagree with each other -- a genuine
+    # signal for scripts/analyze_guesses.py and for the community tab.
+    disputed = conn.execute(
+        """SELECT app_id, category, COUNT(DISTINCT guess_tier) AS n_distinct_guesses,
+                  COUNT(*) AS n_guesses
+           FROM guesses
+           GROUP BY app_id
+           HAVING n_guesses >= 2 AND n_distinct_guesses >= 2
+           ORDER BY n_distinct_guesses DESC, n_guesses DESC
+           LIMIT 5"""
+    ).fetchall()
+    conn.close()
+
+    return {
+        "total_guesses": total,
+        "human_accuracy": round(human_correct / total, 3),
+        "model_accuracy": round(model_correct / total, 3),
+        "human_wins": human_wins,
+        "model_wins": model_wins,
+        "ties": ties,
+        "most_disputed_apps": [dict(r) for r in disputed],
+    }
