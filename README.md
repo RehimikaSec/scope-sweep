@@ -1,72 +1,12 @@
 # ScopeSweep
 
-**A game that teaches OAuth-permission literacy by making players out-guess a real machine learning model — and doubles as a scope-risk auditing tool a school's IT coordinator could actually run.**
+A game that teaches OAuth-permission literacy by having players guess an app's risk level, then compare their call against a real trained machine learning model — and the same model doubles as a scope-risk auditing tool a school's IT coordinator could run against a real list of authorized apps.
 
-Built for a cybersecurity competition. Touches three categories on purpose, not by stretching one idea to fit a checklist:
-
-| Category | How ScopeSweep earns it |
+| Category | How ScopeSweep fits |
 |---|---|
-| **2 — AI-Enabled Solution** | A `RandomForestClassifier`, trained on 14 engineered features — scope risk, category mismatch, real-world publisher-trust context, and a population-derived scope-rarity statistic — predicts an app's OAuth risk tier, with a real held-out accuracy score, real feature importances, and a real explanation per prediction. Not an LLM wrapper, and not a per-scope lookup table either (see below). |
-| **3 — Cybersecurity Education** | The game loop is a spaced, scored, explained quiz: guess an app's risk tier before the model reveals its own call, see *why* both of you landed where you did, build real intuition for what an OAuth scope actually grants. |
-| **1 — Community-Oriented Tool** | *Assessment Mode* runs the same model against a pasted list of real apps and scopes and returns a ranked risk report — the exact workflow a K-12 IT coordinator with no security background could run against their district's actual authorized-app export. |
-
----
-
-## Why this design, not a chatbot
-
-The obvious, weak version of "gamified AI security education" is a chatbot that quizzes you and an LLM that makes up the answers. ScopeSweep is built differently on purpose:
-
-- **The risk model is real and auditable.** `ml/scoring.py` is a hand-written, fully documented rule (grounded in Google's own public OAuth scope sensitivity tiers) that labels a synthetic training set. `ml/model.py` trains a small classifier on *engineered features* derived from that data — never on the rule's own output — and reports its held-out accuracy honestly. You can read every line of both files; nothing is a black box.
-- **Gamification isn't decoration — it's a data pipeline.** Every guess a player makes is logged (`backend/game_state.py`) with the ground truth, the model's call, and the human's call, all three. `scripts/analyze_guesses.py` turns that log into exactly what a real "games with a purpose" system (in the lineage of the ESP Game / reCAPTCHA) would use to find ambiguous cases and candidate retraining data. That's a genuine reason to gamify an AI system, not a scoreboard bolted onto a serious tool.
-- **The same backend is a real tool, not just a game engine.** `POST /api/assess` takes a plain list of `{name, category, scopes}` and returns a ranked risk report. That's ClassroomShield's actual job, wearing the game's ML model.
-
----
-
-## Why this isn't "a lookup table wearing a costume"
-
-The honest version of the obvious skeptical question: if risk tiers come from a hand-written formula, isn't the model just memorizing that formula back? For the *scope-only* version of this project, that critique was fair. Two things now make it not true:
-
-- **The score depends on more than the scope list.** `ml/scoring.py`'s ground truth is a function of scope severity *and* real-world publisher-trust context — whether the publisher is verified, how old the account is, and how many organizations have already installed it — applied as a genuine interaction term (it scales scope severity, it isn't an independent bonus tacked on). The exact same six scopes score differently depending on who's asking: a 6-year-old verified publisher with 41,000 installs gets a real discount; a 3-week-old unverified publisher with 60 installs gets a real premium. `tests/test_scoring.py::test_trustworthy_publisher_discounts_same_risky_scopes` asserts this directly. No static per-scope table has a field for "who is asking," so a lookup table literally cannot reproduce this rule, regardless of how big you make the table.
-- **One feature is a property of the whole dataset, not any single app.** `unexpected_scope_rarity` (`ml/features.py`) measures how common a given "outlier" scope actually is within its category, computed from the empirical frequency across every other app in the training corpus (`compute_population_stats`). That number doesn't exist until you've looked at the whole population — it's a statistical/anomaly-detection-flavored signal, the same *kind* of feature a real fraud- or abuse-detection system leans on, not something any per-app rule could contain.
-
-Both are opt-in and honestly degrade: if you don't have publisher metadata for an app (many real district exports won't), the model and the rule both fall back cleanly to scope-only scoring rather than guessing — `backend/schemas.py`'s `AssessAppRequest` makes every trust field optional, and `AssessResultItem.had_publisher_context` tells you which case you're in. Try Assessment Mode's sample data: `QuickQuiz Pro` and `StudyBuddy Beta` request the *identical* scope set and get different scores, for exactly this reason.
-
-Worth saying plainly: retraining on the richer feature set brought held-out accuracy down from ~100% to **96.4%** (see `ml/model.py` / `/api/model/stats`). That's a feature, not a regression — it means the model is now approximating a genuinely harder, less trivially learnable function, and a held-out number that isn't suspiciously perfect is more credible under questioning, not less.
-
----
-
-## Why anyone plays, and why they come back
-
-A demo that only proves the mechanics work isn't the same as a game people actually want to open. Three deliberate hooks:
-
-- **A premise, not just a mechanic.** You're framed as the newest — and only — app reviewer for a school district that's been rubber-stamping OAuth requests for years. The stakes (student data, a real risk model watching your calls) are stated up front on the landing screen, not left implicit in a quiz UI.
-- **The Daily Sweep — a reason to come back tomorrow.** `GET /api/sweep/today` deterministically seeds the same 10 apps for every player on a given calendar date (`random.Random(date.isoformat())`, the same trick behind Wordle's daily puzzle). A completed sweep ends in a shareable result — `ScopeSweep Day #3 — 8/10 🟩🟩🟥🟩...` — copyable straight to a clipboard, comparable with classmates, and gone by tomorrow, which is the actual retention mechanism: nothing to fall back on if you don't return.
-- **A live Human-vs-Model scoreboard, and achievement badges.** The "Humans vs. AI" tab (`GET /api/community-stats`) aggregates *every* guess anyone has ever logged into a running head-to-head record — a visible, growing number, not a one-time claim. Five badges (Perfect Sweep, AI Slayer for out-scoring the model in a sweep, Combo Hunter, On Fire, Streak Keeper for a 3-day sweep streak) persist per-browser in `localStorage` and unlock with a toast + a confetti burst on a perfect sweep, giving a reason to keep playing past round one.
-
----
-
-## Quickstart
-
-```bash
-git clone <your-repo-url>
-cd scope-sweep
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-
-# (optional — a committed dataset already ships in data/apps_dataset.json)
-python3 -m data.generate_dataset
-
-uvicorn backend.app:app --reload
-# open http://127.0.0.1:8000
-```
-
-No API keys, no cloud account, no GPU, no internet connection required. The frontend uses only system fonts and vanilla JS — it will run at a venue with no wifi.
-
-Run the test suite:
-
-```bash
-pytest -v
-```
+| **AI-enabled solution** | A `RandomForestClassifier`, trained on 14 engineered features, predicts an app's OAuth risk tier, with a real held-out accuracy score, real feature importances, and a plain-language explanation behind every prediction. |
+| **Cybersecurity education** | The game loop is a scored, explained quiz: guess an app's risk tier before the model reveals its own call, then see why both of you landed where you did. |
+| **Community-oriented tool** | Assessment Mode runs the same model against a pasted list of apps and scopes and returns a ranked risk report — the workflow a K-12 IT coordinator could run against a district's actual authorized-app export. |
 
 ---
 
@@ -74,33 +14,41 @@ pytest -v
 
 ### 1. The scope catalog and ground-truth rule
 
-`data/scopes_reference.py` hand-codes ~19 real Google Workspace OAuth scope identifiers into Google's own public three-tier sensitivity classification (**recommended / sensitive / restricted**), plus five documented "dangerous combination" scope pairs — e.g. `contacts.readonly` + `gmail.send` is a plausible spam/phishing pipeline even though each scope looks tame alone.
+`data/scopes_reference.py` classifies about 19 real Google Workspace OAuth scopes into Google's own public three-tier sensitivity system (**recommended / sensitive / restricted**), plus five documented "dangerous combination" scope pairs — e.g. `contacts.readonly` + `gmail.send` is a plausible spam/phishing pipeline even though each scope looks tame alone.
 
-`data/categories_reference.py` defines twelve generic EdTech app archetypes (Flashcard/Quiz Tool, Gradebook/LMS Sync, Parent Communication App, …) and what scopes each one plausibly needs. These are deliberately **generic archetypes, not real product names** — the goal is teaching the pattern of over-permissioning, not making claims about any specific real company's app.
+`data/categories_reference.py` defines twelve generic EdTech app archetypes (Flashcard/Quiz Tool, Gradebook/LMS Sync, Parent Communication App, …) and the scopes each one plausibly needs. These are generic archetypes, not real product names.
 
-`ml/scoring.py` combines both into a documented, auditable formula: base severity from the most sensitive scope requested, a breadth bonus for multiple sensitive/restricted scopes, a category-mismatch penalty, a dangerous-combination bonus, and a small per-scope blast-radius term — squashed through a saturating curve so a handful of stacked risk factors spreads across the score range instead of every "bad" app clipping to exactly 100.
+`ml/scoring.py` combines both into a documented, auditable formula: base severity from the most sensitive scope requested, a breadth bonus for multiple sensitive/restricted scopes, a category-mismatch penalty, a dangerous-combination bonus, a small per-scope blast-radius term, and a publisher-trust adjustment (see below) — squashed through a saturating curve so the score spreads across the range instead of clustering at the extremes.
 
-### 2. The synthetic dataset
+### 2. Publisher trust context
 
-`data/generate_dataset.py` generates 110 synthetic app instances (10 per category) by combining each category's expected scopes with a controlled, randomized amount of over-permissioning — 55% well-behaved, 30% mildly over-permissioned, 15% clearly over-permissioned — and labels each one with the ground-truth rule above. Re-run it any time to regenerate `data/apps_dataset.json` with a different random seed or category mix.
+Risk doesn't come only from which scopes are requested — it also depends on who's asking. Each synthetic app also carries publisher metadata: whether the publisher is verified, how old the account is, and how many organizations have installed it. That context scales the scope-derived severity up or down — the same scope list scores differently depending on the publisher behind it, the same way a real reviewer would weigh a request differently from an established, verified vendor versus a three-week-old unverified one.
 
-### 3. The ML model
+This metadata is optional throughout the system. When it's missing (e.g. a real district export that doesn't track it), both the scoring rule and the model fall back cleanly to scope-only scoring rather than guessing.
 
-`ml/features.py` turns a `(category, scopes, metadata, population_stats)` combination into 14 numeric features: the original 10 (scope counts by tier, max/sum tier weight, category-mismatch count and weight, dangerous-combo count, category baseline sensitivity) plus 4 new ones — publisher-verified flag, normalized account age, log-scaled install count, and `unexpected_scope_rarity` (a population-derived anomaly statistic, see above) — **not** the raw scoring formula's output. Publisher metadata is optional throughout; when it's missing, the contextual features get a distinct `-1` "unknown" sentinel rather than a guessed default. `ml/model.py` trains a `RandomForestClassifier` on those features against a stratified 75/25 train/test split, and caches:
+### 3. The synthetic dataset
 
-- **Held-out accuracy** and a full `classification_report` (precision/recall/F1 per tier) — a real, measured number, exposed at `GET /api/model/stats`.
-- **Feature importances** — which of the 10 features the model actually leans on.
-- Per-prediction **top contributing features**, so the game can say "this call leaned on restricted-scope count and category mismatch" instead of a canned sentence.
+`data/generate_dataset.py` generates 110 synthetic apps (10 per category) by combining each category's expected scopes with a controlled, randomized amount of over-permissioning, and an independently-drawn publisher-trust archetype (new/established × verified/unverified). Every app is labeled with the ground-truth rule above. Re-run it any time to regenerate `data/apps_dataset.json`.
 
-Because the training labels come from a deterministic rule, holdout accuracy is still high (currently **96.4%**, down from ~100% before the publisher-trust interaction and population-rarity feature were added — a harder, less trivially learnable function to approximate) — see [Honest limitations](#honest-limitations-and-roadmap) below for why that's a documented, expected property of the MVP rather than a hidden weakness, and what the real fix looks like.
+### 4. The ML model
 
-### 4. The game loop
+`ml/features.py` turns an app into 14 numeric features: scope counts and weights by tier, category-mismatch signals, dangerous-combo count, the publisher-trust signals (verified flag, account age, install count), and `unexpected_scope_rarity` — how common a given outlier scope actually is within its category, computed from the frequency of that scope across the whole training population. The model is never fed the scoring rule's own output — only these engineered features.
 
-`GET /api/round` serves a random, never-yet-seen (per session) app with its requested scopes rendered as a realistic OAuth-consent-style card. The player guesses Low/Medium/High. `POST /api/guess` scores the guess against ground truth, runs the *same* ML model the assessment tool uses, and returns both verdicts side by side with the model's tier probabilities and the plain-language reasons behind the ground truth. Streak bonuses reward sustained accuracy, not lucky single guesses.
+`ml/model.py` trains a `RandomForestClassifier` on a stratified 75/25 train/test split and reports, honestly:
 
-### 5. Assessment Mode — the Category-1 tool
+- **Held-out accuracy** and a full precision/recall/F1 report, exposed at `GET /api/model/stats` — currently 96.4%.
+- **Feature importances** — which features the model actually leans on.
+- Per-prediction **top contributing features**, so the game can explain a specific call instead of showing a canned sentence.
 
-`POST /api/assess` accepts any list of `{name, category, scopes}` and returns a worst-first ranked risk report using the live model. Paste a real district's authorized-app export (with real product names replaced by generic labels if needed for privacy) and get back exactly the triage list a one-person IT department has no time to build by hand.
+### 5. The game loop
+
+`GET /api/round` serves a random app with its requested scopes rendered as an OAuth-consent-style card, including the publisher's verification badge, account age, and install count. The player guesses Low/Medium/High. `POST /api/guess` scores the guess against ground truth, runs the same model Assessment Mode uses, and returns both verdicts side by side with tier probabilities and plain-language reasoning. Streak bonuses reward sustained accuracy over lucky single guesses.
+
+Two ways to play: the **Daily Sweep** is a fixed set of 10 apps, deterministically chosen from the calendar date (`random.Random(date.isoformat())`), so every player sees the same 10 rounds on a given day and results are shareable and comparable — the same mechanic behind Wordle's daily puzzle. **Practice Mode** is unlimited rounds with no daily reset. A "Humans vs. AI" tab aggregates every guess anyone has logged into a running head-to-head record, and five achievement badges (tracked per-browser) unlock for things like a perfect sweep or a 3-day play streak.
+
+### 6. Assessment Mode
+
+`POST /api/assess` accepts a list of `{name, category, scopes}` (with optional publisher fields) and returns a worst-first ranked risk report using the live model — the same triage list a one-person IT department would otherwise have to build by hand from a district's authorized-app export.
 
 ---
 
@@ -112,6 +60,7 @@ frontend/ (vanilla HTML/CSS/JS, no build step, no CDN dependency)
         ▼
 backend/app.py (FastAPI)
    ├── /api/session, /api/round, /api/guess, /api/leaderboard   → game loop
+   ├── /api/sweep/today, /api/community-stats                   → Daily Sweep + scoreboard
    ├── /api/model/stats                                          → model transparency
    └── /api/assess                                                → real tool mode
         │
@@ -134,21 +83,26 @@ backend/app.py (FastAPI)
 - **Frontend:** vanilla HTML/CSS/JS — no framework, no build tool, no external CDN
 - **Tests:** pytest + FastAPI's `TestClient`
 
-Every piece runs on a laptop CPU in seconds. No paid API, no GPU, no cloud account.
+Every piece runs on a laptop CPU in seconds. No paid API, no GPU, no cloud account required.
 
 ---
 
-## Honest limitations and roadmap
+## Quickstart
 
-Said plainly, because a judge who spots this without you addressing it first is a worse outcome than raising it yourself:
+```bash
+git clone <your-repo-url>
+cd scope-sweep
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
 
-- **The training labels come from a hand-written rule, not real human judgment or real district data.** That's *why* held-out accuracy is still high (96.4%) even after adding real interaction and population-derived terms — the model is approximating a smooth, learnable function, which is a legitimate but limited demonstration of "the model generalizes to feature combinations it wasn't directly trained on." The real next step, and the reason the game logs every guess in the first place, is retraining on **human-labeled data** collected through gameplay (see `scripts/analyze_guesses.py`), which would let the model diverge from — and potentially improve on — the original rule, and would make the accuracy number mean something it doesn't yet.
-- **The app catalog is synthetic, and so is the publisher-trust metadata.** Every app name, and every publisher's verification status/account age/install count, is procedurally generated from documented archetypes (`data/generate_dataset.py`) — not scraped from a real marketplace. That's a deliberate privacy and legal-safety choice, not a data-collection failure — but it does mean Assessment Mode hasn't yet been validated against a real district's actual authorized-app export or a real OAuth marketplace's verification data. That's the natural next pilot, and the schema already supports a real export that's missing trust fields entirely (`AssessResultItem.had_publisher_context` reports which case you're in).
-- **`publisher_verified` carries almost no weight in the trained model** (see its feature importance in `/api/model/stats`) even though the ground-truth rule uses it — account age and install count end up capturing most of the same signal for a shallow tree, so the binary flag is largely redundant once the continuous features are present. Said here rather than left for a judge to notice first.
-- **No live Google Admin SDK integration yet.** A real deployment (closer to the original "ClassroomShield" concept this project grew out of) would pull a district's actual OAuth grants via the Admin SDK Reports API instead of requiring copy-pasted JSON. That's a scoped, achievable v2 — the model and scoring logic underneath don't change, only where the input comes from.
-- **The leaderboard/session store is a local SQLite file with no auth.** Fine for a classroom or competition demo; a real multi-classroom deployment would need real accounts and a hosted database.
+# (optional — a committed dataset already ships in data/apps_dataset.json)
+python3 -m data.generate_dataset
 
-None of these are hidden from `/api/model/stats` or this README — that's deliberate.
+uvicorn backend.app:app --reload
+# open http://127.0.0.1:8000
+```
+
+No API keys, no cloud account, no internet connection required to run it. The frontend uses only system fonts and vanilla JS.
 
 ---
 
@@ -158,12 +112,21 @@ None of these are hidden from `/api/model/stats` or this README — that's delib
 pytest -v
 ```
 
-40 tests total. Highlights:
+40 tests across four files:
 
-- `tests/test_scoring.py` — the ground-truth rule behaves as documented (category mismatch is penalized, dangerous combos are flagged, scores stay bounded, publisher trust context genuinely changes the score for identical scopes, and is a no-op when omitted or when there's nothing to weigh).
-- `tests/test_features.py` — feature engineering produces the right shape, responds correctly to more/less sensitive input, uses a distinct sentinel when publisher metadata is missing, and computes `unexpected_scope_rarity` correctly from a population (a scope never seen before in a category is rarer than a common one).
-- `tests/test_model.py` — the model trains, reports valid probabilities, higher-risk scopes score higher, and predictions work both with and without publisher metadata supplied.
-- `tests/test_api.py` — full round-trip through every endpoint, including error cases (unknown session, invalid tier), the Daily Sweep's determinism, the community scoreboard, and Assessment Mode correctly using (or honestly doing without) publisher context — using an isolated temp database per test run.
+- `tests/test_scoring.py` — the ground-truth rule behaves as documented: category mismatch is penalized, dangerous combos are flagged, scores stay bounded, and publisher trust context changes the score correctly (and is a no-op when omitted).
+- `tests/test_features.py` — feature engineering produces the right shape, responds correctly to more/less sensitive input, and computes the population-derived rarity feature correctly.
+- `tests/test_model.py` — the model trains, reports valid probabilities, and predictions work both with and without publisher metadata supplied.
+- `tests/test_api.py` — full round-trip through every endpoint, including error cases, the Daily Sweep's determinism, the community scoreboard, and Assessment Mode.
+
+---
+
+## Limitations and roadmap
+
+- **Training labels come from a hand-written rule, not real human judgment or real district data.** The next step is retraining on human-labeled data collected through gameplay (see `scripts/analyze_guesses.py`), which every guess is already logged to support.
+- **The app catalog and publisher metadata are synthetic**, generated from documented archetypes rather than scraped from a real marketplace. Assessment Mode hasn't yet been validated against a real district's authorized-app export.
+- **No live Google Admin SDK integration yet.** A real deployment would pull a district's actual OAuth grants via the Admin SDK Reports API instead of requiring copy-pasted JSON — the scoring and model underneath wouldn't need to change, only where the input comes from.
+- **The leaderboard/session store is a local SQLite file with no auth.** Fine for a demo; a real multi-classroom deployment would need real accounts and a hosted database.
 
 ---
 
@@ -202,11 +165,11 @@ scope-sweep/
 ├── frontend/
 │   ├── index.html / style.css / app.js   # vanilla, no build step
 ├── scripts/
-│   └── analyze_guesses.py        # human-computation loop: turns guess log into a report + retraining CSV
+│   └── analyze_guesses.py        # turns the guess log into a report + retraining CSV
 ├── tests/
 │   └── test_*.py                 # pytest suite
 └── docs/
-    └── DEMO_SCRIPT.md            # a 4-minute walkthrough for judges
+    └── DEMO_SCRIPT.md            # a walkthrough of the app
 ```
 
 ---
