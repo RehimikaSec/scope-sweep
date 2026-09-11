@@ -96,6 +96,7 @@
             <div class="app-category" id="appCategory">—</div>
           </div>
         </div>
+        <div class="publisher-meta" id="publisherMeta"></div>
         <p class="consent-sub">wants to access your account</p>
         <ul class="scope-list" id="scopeList"></ul>
       </div>
@@ -146,9 +147,12 @@
   <section id="tab-model" class="tab-panel">
     <div class="panel">
       <h2>What's actually inside the model</h2>
-      <p class="lede">A RandomForestClassifier trained on 10 engineered features from every
-        scope grant — not a black box. Held out from training data, so this accuracy is a measured number,
-        not a claim.</p>
+      <p class="lede">A RandomForestClassifier trained on 14 engineered features — scope counts and
+        weights, category-mismatch signals, real-world publisher-trust context (verification status,
+        account age, install count), and a population-derived "how rare is this scope for this
+        category" statistic computed from the whole training corpus. That last one can't be written
+        as a static per-scope table — it only exists because the model looked at every other app in
+        the dataset. Held out from training data, so this accuracy is a measured number, not a claim.</p>
       <div class="model-stats-grid" id="modelStatsGrid"></div>
       <h3 class="sub-head">Feature importance</h3>
       <p class="lede small">What the model actually weighs when it makes a call.</p>

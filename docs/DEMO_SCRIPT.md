@@ -28,6 +28,10 @@ Point at the landing screen before clicking anything.
   warning (roughly 1 in 9 apps). Point at it: *"individually these two
   scopes look tame — together they're a spam or impersonation pipeline,
   and the model still weighs that correctly."*
+- Also point at the publisher badge on the consent card the first time it
+  comes up: *"this isn't just 'what scope did it ask for' — verified
+  status, account age, and install count are real signals a school IT
+  reviewer would actually check, and they change the call."*
 - Finish the sweep (or skip ahead if time is short — judges respond well
   to seeing the **recap screen** regardless of the exact score). If you
   land a perfect 10/10, the confetti and badge unlock happen live — let it
@@ -56,11 +60,21 @@ Click into the **Humans vs. AI** tab.
 - Click **Model stats**.
 - Point at held-out accuracy plainly: *"this is a held-out test score, not
   a number I picked — the model never saw these examples during
-  training."*
+  training. It used to sit near 100% before I added real publisher-trust
+  and population-anomaly features — 96% now, because the function it's
+  approximating actually got harder."*
 - Point at feature importance: *"the model leans hardest on the most-
   sensitive-scope-requested and total sensitivity weight — exactly what a
   security reviewer would check first, except this model learned that
-  ranking from data instead of me hand-coding it."*
+  ranking from data instead of me hand-coding it. It's also using account
+  age and install count, further down the list — real-world context a
+  static per-scope table has no field for at all."*
+- If a judge pushes on "isn't this just your rule memorized back": open
+  Assessment Mode and run the sample data — `QuickQuiz Pro` and
+  `StudyBuddy Beta` request the *identical* six scopes and land at
+  different risk levels, purely from publisher trust context. *"A lookup
+  table maps a scope list to a score. This maps a scope list **and who's
+  asking** to a score — there's no static table that does that."*
 
 ## 5. Show it's also a real tool (30 seconds)
 
@@ -81,6 +95,16 @@ Click into the **Humans vs. AI** tab.
 
 ## Anticipated judge questions
 
+- **"Isn't this just a lookup table with extra steps — same scope, same
+  score, every time?"** — No, and this is worth demonstrating live if
+  asked: the ground-truth rule scales scope severity by real publisher
+  trust context (verified status, account age, install count), so the
+  identical scope list scores differently depending on who's asking — see
+  `ml/scoring.py::_trust_context` and `tests/test_scoring.py`. One feature
+  (`unexpected_scope_rarity`) is a population-level statistic computed
+  across the whole training corpus, not something any single-app rule
+  could contain at all. Both are things a static per-scope table has no
+  field for, structurally, not just in this implementation.
 - **"Isn't the model just learning your rule back?"** — Yes, and the
   README says so directly. It's trained on engineered features, never on
   the rule's own output, so held-out accuracy demonstrates real

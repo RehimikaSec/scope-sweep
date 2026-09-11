@@ -16,6 +16,7 @@ class RoundResponse(BaseModel):
     category: str
     description: str
     scopes: list[dict]  # [{id, label, tier, desc}]
+    publisher: dict     # {verified, account_age_days, install_count}
 
 
 class GuessRequest(BaseModel):
@@ -45,6 +46,12 @@ class AssessAppRequest(BaseModel):
     name: str
     category: str
     scopes: list[str]
+    # Optional real-world trust signals (a real Admin SDK / marketplace
+    # export may or may not carry these). When any is omitted, the model
+    # and rule both fall back to scope-only scoring rather than guessing.
+    publisher_verified: bool | None = None
+    account_age_days: int | None = None
+    install_count: int | None = None
 
 
 class AssessRequest(BaseModel):
@@ -59,3 +66,4 @@ class AssessResultItem(BaseModel):
     model_score: float
     reasons: list[str]
     unrecognized_scopes: list[str]
+    had_publisher_context: bool

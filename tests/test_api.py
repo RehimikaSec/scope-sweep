@@ -33,6 +33,8 @@ def test_full_game_round_trip(client):
     round_data = r.json()
     assert round_data["app_id"]
     assert len(round_data["scopes"]) > 0
+    assert "publisher" in round_data
+    assert set(round_data["publisher"].keys()) == {"verified", "account_age_days", "install_count"}
 
     r = client.post("/api/guess", json={
         "session_id": session_id, "app_id": round_data["app_id"], "guess_tier": "Medium",
@@ -94,6 +96,23 @@ def test_assess_endpoint_ranks_results_worst_first(client):
     results = r.json()["results"]
     assert results[0]["name"] == "Scary App"
     assert results[0]["model_score"] >= results[1]["model_score"]
+
+
+def test_assess_uses_publisher_context_when_provided(client):
+    scopes = ["openid", "userinfo.email", "userinfo.profile", "drive.file", "contacts.readonly", "gmail.send"]
+    r = client.post("/api/assess", json={"apps": [
+        {"name": "Trusted App", "category": "Flashcard / Quiz Tool", "scopes": scopes,
+         "publisher_verified": True, "account_age_days": 2500, "install_count": 50000},
+        {"name": "Shady App", "category": "Flashcard / Quiz Tool", "scopes": scopes,
+         "publisher_verified": False, "account_age_days": 15, "install_count": 40},
+        {"name": "No Context App", "category": "Flashcard / Quiz Tool", "scopes": scopes},
+    ]})
+    assert r.status_code == 200
+    results = {row["name"]: row for row in r.json()["results"]}
+    assert results["Trusted App"]["had_publisher_context"] is True
+    assert results["Shady App"]["had_publisher_context"] is True
+    assert results["No Context App"]["had_publisher_context"] is False
+    assert results["Shady App"]["model_score"] >= results["Trusted App"]["model_score"]
 
 
 def test_assess_handles_unrecognized_scopes_gracefully(client):

@@ -25,6 +25,11 @@
 }
 
 * { box-sizing: border-box; }
+/* The native `hidden` attribute must always win over an element's own
+   `display` rule (e.g. .progress-row sets display:flex) -- without this,
+   toggling `.hidden = true/false` in JS silently does nothing for any
+   element whose class also sets `display`. */
+[hidden] { display: none !important; }
 
 body {
   margin: 0;
@@ -162,6 +167,18 @@ input[type="text"] {
   box-shadow: var(--shadow);
 }
 .consent-head { display: flex; align-items: center; gap: 12px; }
+
+.publisher-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.pub-badge {
+  font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.pub-badge.verified { background: #e6f5ee; color: #1f7a4d; }
+.pub-badge.unverified { background: #fdeeec; color: #b8382b; }
+.pub-fact {
+  font-size: 12px; color: #556; background: #f0f2f6; padding: 4px 10px;
+  border-radius: 20px; font-family: ui-monospace, monospace;
+}
 .app-icon {
   width: 44px; height: 44px; border-radius: 10px; background: #eef2f7; color: #fff;
   display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px;
@@ -310,6 +327,7 @@ input[type="text"] {
 .tier-pill.Medium { background: var(--medium-soft); color: var(--medium); }
 .tier-pill.High { background: var(--high-soft); color: var(--high); }
 .assess-reason { font-size: 12px; color: var(--ink-soft); margin: 2px 0 0; }
+.assess-reason.context-note { color: var(--ink-faint); font-style: italic; }
 
 footer { max-width: 860px; margin: 0 auto; padding: 20px; color: var(--ink-faint); font-size: 11.5px; border-top: 1px solid var(--border); }
 

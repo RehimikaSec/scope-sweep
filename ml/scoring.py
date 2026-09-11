@@ -14,6 +14,7 @@ generalizes (see tests/test_model.py and ml/model.py's held-out accuracy).
 """
 
 from __future__ import annotations
+import math
 from dataclasses import dataclass, field
 
 from data.scopes_reference import SCOPES, TIER_WEIGHT, DANGEROUS_COMBOS
@@ -36,10 +37,62 @@ def _tier_from_score(score: float) -> str:
     return "High"
 
 
-def score_app(category: str, scope_ids: list[str]) -> RiskResult:
+def _trust_context(publisher_verified: bool, account_age_days: int,
+                    install_count: int) -> tuple[float, str]:
+    """How much a publisher's real-world trust signals should scale the
+    scope-derived severity above, expressed as a *fraction* (not points):
+    a positive fraction amplifies the same scopes' risk, a negative
+    fraction discounts it. This is deliberately an interaction term, not
+    an independent bonus -- multiplied against scope severity elsewhere,
+    so a trustworthy publisher requesting zero sensitive scopes gets no
+    special treatment (there's nothing to discount), while the same
+    trustworthy publisher requesting a genuinely sensitive scope gets a
+    real, explainable break, and a brand-new unverified publisher
+    requesting that same scope gets a real, explainable premium.
+
+    Every input here is something a real OAuth marketplace actually
+    exposes (Google's own app verification badge, first-seen date,
+    install/user count) -- this is standing in for real-world context a
+    static per-scope table has no field for at all.
+    """
+    # Newer accounts carry more uncertainty; the effect decays to zero by
+    # roughly one year old.
+    age_component = max(0.0, (400 - min(account_age_days, 400)) / 400) * 0.35
+
+    verified_component = -0.15 if publisher_verified else 0.15
+
+    # Log-scaled: a handful of installs means near-zero real-world scrutiny
+    # has happened yet; tens of thousands means a lot of other admins have
+    # already looked at this app and it's still standing.
+    popularity_component = 0.20 - math.log10(max(install_count, 1) + 1) * 0.05
+    popularity_component = max(-0.15, min(0.20, popularity_component))
+
+    fraction = age_component + verified_component + popularity_component
+
+    descriptor = "an unverified publisher" if not publisher_verified else "a verified publisher"
+    age_label = f"{account_age_days} days old" if account_age_days < 400 else f"{account_age_days // 30} months old"
+    direction = "raises" if fraction > 0.03 else "lowers" if fraction < -0.03 else "has little effect on"
+    reason = (
+        f"Publisher context ({descriptor}, {age_label}, {install_count:,} installs) "
+        f"{direction} the risk contributed by this app's sensitive scopes."
+    )
+    return fraction, reason
+
+
+def score_app(category: str, scope_ids: list[str], *,
+              publisher_verified: bool | None = None,
+              account_age_days: int | None = None,
+              install_count: int | None = None) -> RiskResult:
     """Compute the ground-truth risk score/tier for a given app category
     and its requested scope list. Every contribution is logged in `reasons`
     so the game can show a real explanation, not just a number.
+
+    publisher_verified / account_age_days / install_count are optional --
+    when all three are supplied, they scale scope severity by real-world
+    publisher trust context (see `_trust_context`). When omitted, scoring
+    falls back to scope-only behavior, which matters honestly: a real
+    district's authorized-app export may not always carry this metadata,
+    and the tool should degrade gracefully rather than pretend otherwise.
     """
     reasons: list[str] = []
     scope_set = set(scope_ids)
@@ -92,7 +145,19 @@ def score_app(category: str, scope_ids: list[str]) -> RiskResult:
     #    individually low-sensitivity.
     breadth_count_bonus = max(0, len(scope_ids) - 3) * 1.5
 
-    raw = base + mismatch_bonus + combo_bonus + breadth_count_bonus
+    # 5. Publisher-trust interaction: scales (doesn't just add to) the base
+    #    scope severity by real-world trust context, when it's available.
+    #    Proportional to `base` on purpose -- a trustworthy publisher with
+    #    no sensitive scopes has nothing to discount, and an untrustworthy
+    #    one with no sensitive scopes has nothing to inflate either.
+    trust_points = 0.0
+    if publisher_verified is not None and account_age_days is not None and install_count is not None:
+        trust_fraction, trust_reason = _trust_context(publisher_verified, account_age_days, install_count)
+        trust_points = trust_fraction * base
+        reasons.append(trust_reason)
+
+    raw = base + mismatch_bonus + combo_bonus + breadth_count_bonus + trust_points
+    raw = max(0.0, raw)
     # Saturating transform (raw / (raw + K)) instead of a hard clip, so a
     # handful of stacked bonuses spreads across the upper range instead of
     # every "bad" app flattening out at exactly 100.

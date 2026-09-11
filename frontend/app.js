@@ -184,6 +184,26 @@ async function startGame(chosenMode) {
 }
 
 // ---------- Rendering a round (shared by both modes) ----------
+function formatInstalls(n) {
+  if (n >= 1000) return Math.round(n / 100) / 10 + "k";
+  return String(n);
+}
+
+function renderPublisherMeta(publisher) {
+  const host = document.getElementById("publisherMeta");
+  if (!publisher) { host.innerHTML = ""; return; }
+  const verifiedBadge = publisher.verified
+    ? `<span class="pub-badge verified">✓ Verified publisher</span>`
+    : `<span class="pub-badge unverified">⚠ Unverified publisher</span>`;
+  const ageDays = publisher.account_age_days;
+  const ageLabel = ageDays < 120 ? `New — ${ageDays}d old` : `${Math.round(ageDays / 30)} mo old`;
+  host.innerHTML = `
+    ${verifiedBadge}
+    <span class="pub-fact">${ageLabel}</span>
+    <span class="pub-fact">${formatInstalls(publisher.install_count)} installs</span>
+  `;
+}
+
 function renderRoundCard(roundData) {
   document.getElementById("resultPanel").classList.add("hidden");
   document.getElementById("nextRow").classList.add("hidden");
@@ -197,6 +217,7 @@ function renderRoundCard(roundData) {
   const icon = document.getElementById("appIcon");
   icon.textContent = roundData.name[0];
   icon.style.background = colorForCategory(roundData.category);
+  renderPublisherMeta(roundData.publisher);
 
   const list = document.getElementById("scopeList");
   list.innerHTML = "";
@@ -518,14 +539,21 @@ async function loadModelStats() {
 
 // ---------- Assessment mode ----------
 const SAMPLE_ASSESS = [
+  // Same risky scopes, opposite publisher context -- deliberately paired to
+  // show the model's score isn't just a function of the scope list.
   { name: "QuickQuiz Pro", category: "Flashcard / Quiz Tool",
-    scopes: ["openid", "userinfo.email", "userinfo.profile", "drive.file", "contacts.readonly", "gmail.send"] },
+    scopes: ["openid", "userinfo.email", "userinfo.profile", "drive.file", "contacts.readonly", "gmail.send"],
+    publisher_verified: true, account_age_days: 1850, install_count: 41000 },
+  { name: "StudyBuddy Beta", category: "Flashcard / Quiz Tool",
+    scopes: ["openid", "userinfo.email", "userinfo.profile", "drive.file", "contacts.readonly", "gmail.send"],
+    publisher_verified: false, account_age_days: 22, install_count: 60 },
   { name: "ClassBoard Live", category: "Digital Whiteboard",
     scopes: ["openid", "userinfo.email", "userinfo.profile", "drive.file"] },
   { name: "RosterSync", category: "Attendance Tracker",
     scopes: ["openid", "userinfo.email", "classroom.rosters.readonly", "classroom.courses.readonly", "drive"] },
   { name: "ParentPing", category: "Parent Communication App",
-    scopes: ["openid", "userinfo.email", "userinfo.profile", "gmail.send", "contacts.readonly"] },
+    scopes: ["openid", "userinfo.email", "userinfo.profile", "gmail.send", "contacts.readonly"],
+    publisher_verified: true, account_age_days: 900, install_count: 8200 },
   { name: "FormFlow", category: "Survey / Forms Tool",
     scopes: ["openid", "userinfo.email", "forms.body", "gmail.readonly", "admin.directory.user.readonly"] },
 ];
@@ -561,6 +589,7 @@ function renderAssessResults(results) {
       <td><span class="tier-pill ${r.model_tier}">${r.model_tier}</span></td>
       <td class="mono">${r.model_score}</td>
       <td>${r.reasons.map(x => `<div class="assess-reason">• ${escapeHtml(x)}</div>`).join("")}
+          ${!r.had_publisher_context ? `<div class="assess-reason context-note">Scored on scope risk alone — no publisher trust data provided.</div>` : ""}
           ${r.unrecognized_scopes.length ? `<div class="assess-reason">Unrecognized: ${r.unrecognized_scopes.join(", ")}</div>` : ""}</td>
     </tr>`).join("");
   div.innerHTML = `

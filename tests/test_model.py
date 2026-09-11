@@ -46,3 +46,24 @@ def test_top_features_returned_for_a_prediction():
     assert len(pred.top_features) == 3
     for name, val in pred.top_features:
         assert isinstance(name, str)
+
+
+def test_predict_works_with_and_without_publisher_metadata():
+    """The model must degrade gracefully when metadata isn't available
+    (e.g. a real district export with no publisher trust data) -- it
+    should still return a valid prediction, just without that signal."""
+    model = ScopeRiskModel()
+    scopes = ["openid", "userinfo.email", "drive", "contacts.readonly", "gmail.send"]
+    bare = model.predict("Flashcard / Quiz Tool", scopes)
+    with_context = model.predict(
+        "Flashcard / Quiz Tool", scopes,
+        metadata={"publisher_verified": True, "account_age_days": 2000, "install_count": 40000},
+    )
+    assert bare.tier in ("Low", "Medium", "High")
+    assert with_context.tier in ("Low", "Medium", "High")
+
+
+def test_population_stats_computed_at_load_time():
+    model = ScopeRiskModel()
+    assert isinstance(model.population_stats, dict)
+    assert len(model.population_stats) > 0

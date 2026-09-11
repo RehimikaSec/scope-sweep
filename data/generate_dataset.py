@@ -30,6 +30,34 @@ NOUNS = ["Fox", "Otter", "Comet", "Maple", "River", "Falcon", "Pine", "Harbor",
 
 OTHER_SCOPES = list(SCOPES.keys())
 
+# Publisher-trust archetypes, drawn *independently* of how over-permissioned
+# an app's scope list is. This independence is deliberate: it's what
+# produces genuine counter-examples in the dataset -- a brand-new,
+# unverified publisher that only ever asks for three harmless scopes, and a
+# long-established, verified, widely-installed publisher that still
+# over-requests. Without those counter-examples, "new + unverified" would
+# just be a second proxy for "risky," and the model (and a skeptical judge)
+# would be right to call that redundant rather than a real interaction.
+#   name                       weight  age_days range   install_count range
+TRUST_ARCHETYPES = [
+    ("new_unverified",         0.25,  (5, 120),     (5, 300)),
+    ("established_unverified", 0.15,  (400, 2500),  (50, 3000)),
+    ("new_verified",          0.15,  (10, 180),    (20, 1500)),
+    ("established_verified",   0.45,  (300, 3000),  (500, 60000)),
+]
+
+
+def _generate_publisher_metadata() -> dict:
+    names = [t[0] for t in TRUST_ARCHETYPES]
+    weights = [t[1] for t in TRUST_ARCHETYPES]
+    chosen = random.choices(names, weights=weights, k=1)[0]
+    _, _, age_range, install_range = next(t for t in TRUST_ARCHETYPES if t[0] == chosen)
+    return {
+        "publisher_verified": "verified" in chosen,
+        "account_age_days": random.randint(*age_range),
+        "install_count": random.randint(*install_range),
+    }
+
 
 def _generate_app(app_id: int, category: str) -> dict:
     cat = CATEGORIES[category]
@@ -68,7 +96,13 @@ def _generate_app(app_id: int, category: str) -> dict:
         scopes.add(random.choice(OTHER_SCOPES))
 
     name = f"{random.choice(ADJECTIVES)}{random.choice(NOUNS)}"
-    result = score_app(category, sorted(scopes))
+    publisher = _generate_publisher_metadata()
+    result = score_app(
+        category, sorted(scopes),
+        publisher_verified=publisher["publisher_verified"],
+        account_age_days=publisher["account_age_days"],
+        install_count=publisher["install_count"],
+    )
 
     return {
         "id": f"app-{app_id:03d}",
@@ -76,6 +110,9 @@ def _generate_app(app_id: int, category: str) -> dict:
         "category": category,
         "description": f"A {category.lower()} used in K-12 classrooms.",
         "scopes": sorted(scopes),
+        "publisher_verified": publisher["publisher_verified"],
+        "account_age_days": publisher["account_age_days"],
+        "install_count": publisher["install_count"],
         "ground_truth_score": result.score,
         "ground_truth_tier": result.tier,
         "reasons": result.reasons,

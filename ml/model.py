@@ -4,9 +4,11 @@ app's risk tier from engineered scope features (ml/features.py) -- trained,
 at import time, on the synthetic dataset in data/apps_dataset.json.
 
 Why a RandomForestClassifier and not something bigger:
-  - The problem is tabular (10 hand-engineered numeric features), not text
-    or vision -- gradient-boosted/random-forest trees are the standard,
-    well-justified choice for tabular data, not a downgrade from "real AI."
+  - The problem is tabular (14 hand-engineered numeric features -- scope
+    counts/weights, category-mismatch signals, publisher-trust context, and
+    a population-derived scope-rarity statistic), not text or vision --
+    gradient-boosted/random-forest trees are the standard, well-justified
+    choice for tabular data, not a downgrade from "real AI."
   - It trains from scratch in well under a second on CPU with no GPU, which
     matters for a project that has to run on a judge's laptop with zero
     setup friction and zero cloud cost.
@@ -31,7 +33,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
-from ml.features import extract_features, FEATURE_NAMES
+from ml.features import extract_features, compute_population_stats, FEATURE_NAMES
 
 DATASET_PATH = Path(__file__).parent.parent / "data" / "apps_dataset.json"
 TIER_ORDER = ["Low", "Medium", "High"]
@@ -48,7 +50,12 @@ class Prediction:
 class ScopeRiskModel:
     def __init__(self, dataset_path: Path = DATASET_PATH, test_size: float = 0.25, seed: int = 7):
         self.apps = json.loads(dataset_path.read_text())
-        X = [extract_features(a["category"], a["scopes"]) for a in self.apps]
+        # Population stats are computed once, from the full training corpus,
+        # and reused for every future prediction (train or live) -- the same
+        # way a real anomaly-detection baseline would be built once and
+        # compared against, not recomputed per single app.
+        self.population_stats = compute_population_stats(self.apps)
+        X = [self._features_for(a) for a in self.apps]
         y = [a["ground_truth_tier"] for a in self.apps]
 
         X_train, X_test, y_train, y_test = train_test_split(
@@ -74,8 +81,20 @@ class ScopeRiskModel:
             reverse=True,
         )
 
-    def predict(self, category: str, scope_ids: list[str]) -> Prediction:
-        feats = extract_features(category, scope_ids)
+    def _features_for(self, app_row: dict) -> list[float]:
+        metadata = {
+            "publisher_verified": app_row.get("publisher_verified"),
+            "account_age_days": app_row.get("account_age_days"),
+            "install_count": app_row.get("install_count"),
+        }
+        return extract_features(
+            app_row["category"], app_row["scopes"],
+            metadata=metadata, population_stats=self.population_stats,
+        )
+
+    def predict(self, category: str, scope_ids: list[str], metadata: dict | None = None) -> Prediction:
+        feats = extract_features(category, scope_ids, metadata=metadata,
+                                  population_stats=self.population_stats)
         X = np.array([feats])
         proba = self.clf.predict_proba(X)[0]
         classes = list(self.clf.classes_)

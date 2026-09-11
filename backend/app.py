@@ -67,6 +67,23 @@ def _scope_detail(scope_id: str) -> dict:
     return {"id": scope_id, "label": meta["label"], "tier": meta["tier"], "desc": meta["desc"]}
 
 
+def _publisher_detail(app_row: dict) -> dict:
+    return {
+        "verified": app_row["publisher_verified"],
+        "account_age_days": app_row["account_age_days"],
+        "install_count": app_row["install_count"],
+    }
+
+
+def _app_metadata(app_row: dict) -> dict:
+    """Metadata dict shaped for ml.model.predict()/ml.scoring.score_app()."""
+    return {
+        "publisher_verified": app_row["publisher_verified"],
+        "account_age_days": app_row["account_age_days"],
+        "install_count": app_row["install_count"],
+    }
+
+
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
@@ -108,6 +125,7 @@ def get_round(session_id: str):
         "category": app_row["category"],
         "description": app_row["description"],
         "scopes": [_scope_detail(s) for s in app_row["scopes"]],
+        "publisher": _publisher_detail(app_row),
     }
 
 
@@ -122,7 +140,7 @@ def submit_guess(req: GuessRequest):
     if not game_state.get_session(req.session_id):
         raise HTTPException(404, "Unknown session")
 
-    prediction = model.predict(app_row["category"], app_row["scopes"])
+    prediction = model.predict(app_row["category"], app_row["scopes"], metadata=_app_metadata(app_row))
 
     outcome = game_state.record_guess(
         session_id=req.session_id,
@@ -176,6 +194,7 @@ def sweep_today():
         "category": a["category"],
         "description": a["description"],
         "scopes": [_scope_detail(s) for s in a["scopes"]],
+        "publisher": _publisher_detail(a),
     } for a in chosen]
 
     return {"date": today.isoformat(), "day_number": max(day_number, 1), "rounds": rounds}
@@ -220,8 +239,21 @@ def assess(req: AssessRequest):
     for a in req.apps:
         recognized = [s for s in a.scopes if s in SCOPES]
         unrecognized = [s for s in a.scopes if s not in SCOPES]
-        prediction = model.predict(a.category, recognized)
-        rule_result = score_app(a.category, recognized)
+        has_context = (a.publisher_verified is not None
+                       and a.account_age_days is not None
+                       and a.install_count is not None)
+        metadata = {
+            "publisher_verified": a.publisher_verified,
+            "account_age_days": a.account_age_days,
+            "install_count": a.install_count,
+        } if has_context else None
+        prediction = model.predict(a.category, recognized, metadata=metadata)
+        rule_result = score_app(
+            a.category, recognized,
+            publisher_verified=a.publisher_verified,
+            account_age_days=a.account_age_days,
+            install_count=a.install_count,
+        )
         results.append(AssessResultItem(
             name=a.name,
             category=a.category,
@@ -230,6 +262,7 @@ def assess(req: AssessRequest):
             model_score=prediction.score_0_100,
             reasons=rule_result.reasons,
             unrecognized_scopes=unrecognized,
+            had_publisher_context=has_context,
         ))
     results.sort(key=lambda r: r.model_score, reverse=True)
     return {"results": [r.model_dump() for r in results]}
