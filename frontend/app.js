@@ -51,7 +51,7 @@ function showToast(text) {
 }
 
 // ---------- Category -> deterministic color, so app icons aren't one flat gray ----------
-const ICON_PALETTE = ["#5aa9e6", "#8f7ae6", "#e6a35a", "#5ae6b8", "#e65a8f", "#a3e65a", "#e6c25a", "#5ac9e6"];
+const ICON_PALETTE = ["#0d6efd", "#7c3aed", "#f59e0b", "#14b8a6", "#ec4899", "#22c55e", "#eab308", "#06b6d4"];
 function colorForCategory(cat) {
   let h = 0;
   for (let i = 0; i < cat.length; i++) h = (h * 31 + cat.charCodeAt(i)) >>> 0;
@@ -76,7 +76,7 @@ function burstConfetti() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   const ctx = canvas.getContext("2d");
-  const colors = ["#5aa9e6", "#8f7ae6", "#e6c25a", "#4caf7d", "#e2685c"];
+  const colors = ["#0d6efd", "#7c3aed", "#ffb020", "#16a34a", "#ec4899"];
   const pieces = Array.from({ length: 140 }, () => ({
     x: Math.random() * canvas.width,
     y: -20 - Math.random() * canvas.height * 0.3,

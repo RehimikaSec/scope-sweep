@@ -10,7 +10,7 @@
 
 <header class="topbar">
   <div class="brand">
-    <span class="brand-mark">◆</span>
+    <span class="brand-mark">🛡️</span>
     <div>
       <h1>ScopeSweep</h1>
       <p class="tagline">Beat the model. Protect the district.</p>
@@ -33,14 +33,31 @@
     <!-- ---- Landing / mode select ---- -->
     <div id="onboard" class="panel">
       <div class="hero">
-        <p class="eyebrow">Day <span id="dayNumberHero">—</span> on the job</p>
-        <h2>You're the newest — and only — app reviewer for a school district
-          of 4,200 students.</h2>
-        <p class="lede">Your predecessor rubber-stamped every OAuth request
-          that landed on their desk. Some of those apps can now read every
-          student's email, or send it. Today's queue has 10 requests in it.
-          A trained risk model has already made its own call on each one —
-          you don't get to see it until after you commit to yours.</p>
+        <div class="hero-text">
+          <p class="eyebrow">Day <span id="dayNumberHero">—</span> on the job</p>
+          <h2>You're the newest — and only — app reviewer for a school district
+            of 4,200 students.</h2>
+          <p class="lede">Your predecessor rubber-stamped every OAuth request
+            that landed on their desk. Some of those apps can now read every
+            student's email, or send it. Today's queue has 10 requests in it.
+            A trained risk model has already made its own call on each one —
+            you don't get to see it until after you commit to yours.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a monitor showing a shield, with a magnifying glass reviewing it">
+            <circle cx="155" cy="120" r="112" fill="#ffe1cf"/>
+            <ellipse cx="150" cy="199" rx="58" ry="8" fill="#1f2a44" opacity="0.12"/>
+            <rect x="132" y="168" width="36" height="20" rx="5" fill="#1f2a44"/>
+            <rect x="44" y="38" width="212" height="142" rx="18" fill="#0d6efd"/>
+            <rect x="60" y="54" width="180" height="110" rx="10" fill="#eaf7ff"/>
+            <text x="150" y="120" font-size="58" text-anchor="middle" dominant-baseline="central">🛡️</text>
+            <circle cx="228" cy="150" r="27" fill="#ffffff" stroke="#ffb020" stroke-width="9"/>
+            <line x1="247" y1="169" x2="270" y2="192" stroke="#ffb020" stroke-width="11" stroke-linecap="round"/>
+            <text x="36" y="46" font-size="22">✨</text>
+            <text x="252" y="42" font-size="20">⭐</text>
+            <text x="30" y="180" font-size="18">✦</text>
+          </svg>
+        </div>
       </div>
 
       <div class="mode-grid">
@@ -49,7 +66,7 @@
             <span class="mode-badge">Today's Sweep</span>
             <span class="mode-day">Day <span id="dayNumberCard">—</span></span>
           </div>
-          <h3>The same 10 requests everyone gets today</h3>
+          <h3>🗓️ The same 10 requests everyone gets today</h3>
           <p>One shot, 10 rounds, a shareable result when you're done. Come
              back tomorrow for a new queue.</p>
           <div class="streak-chip" id="streakChip" hidden>
@@ -63,7 +80,7 @@
           <div class="mode-card-top">
             <span class="mode-badge alt">Practice</span>
           </div>
-          <h3>Unlimited rounds, no pressure</h3>
+          <h3>🎯 Unlimited rounds, no pressure</h3>
           <p>Warm up, or keep going after the sweep. Good for actually
              learning the scope catalog.</p>
           <input id="practiceNameInput" type="text" placeholder="Your name (optional)" maxlength="40">
@@ -82,10 +99,10 @@
       </div>
 
       <div class="hud">
-        <div class="hud-stat"><span class="hud-label">Score</span><span id="hudScore" class="hud-val">0</span></div>
-        <div class="hud-stat" id="hudStreakTile"><span class="hud-label">Streak</span><span id="hudStreak" class="hud-val">0</span></div>
-        <div class="hud-stat"><span class="hud-label">Accuracy</span><span id="hudAccuracy" class="hud-val">—</span></div>
-        <div class="hud-stat"><span class="hud-label">vs. Model</span><span id="hudVsModel" class="hud-val">0–0</span></div>
+        <div class="hud-stat"><span class="hud-label">⭐ Score</span><span id="hudScore" class="hud-val">0</span></div>
+        <div class="hud-stat" id="hudStreakTile"><span class="hud-label">🔥 Streak</span><span id="hudStreak" class="hud-val">0</span></div>
+        <div class="hud-stat"><span class="hud-label">🎯 Accuracy</span><span id="hudAccuracy" class="hud-val">—</span></div>
+        <div class="hud-stat"><span class="hud-label">🤖 vs. Model</span><span id="hudVsModel" class="hud-val">0–0</span></div>
       </div>
 
       <div class="consent-card" id="consentCard">
@@ -102,9 +119,9 @@
       </div>
 
       <div class="guess-row" id="guessRow">
-        <button class="guess-btn low" data-tier="Low">Low risk</button>
-        <button class="guess-btn medium" data-tier="Medium">Medium risk</button>
-        <button class="guess-btn high" data-tier="High">High risk</button>
+        <button class="guess-btn low" data-tier="Low">🟢 Low risk</button>
+        <button class="guess-btn medium" data-tier="Medium">🟡 Medium risk</button>
+        <button class="guess-btn high" data-tier="High">🔴 High risk</button>
       </div>
 
       <div id="resultPanel" class="result-panel hidden"></div>
@@ -123,7 +140,7 @@
   <!-- ============ HUMANS VS AI TAB ============ -->
   <section id="tab-community" class="tab-panel">
     <div class="panel">
-      <h2>Humans vs. the model</h2>
+      <h2>🤖 Humans vs. the model</h2>
       <p class="lede">Every guess anyone has ever made in this app, tallied
         live — this isn't a claim about the model, it's the actual running
         scoreboard.</p>
@@ -134,7 +151,7 @@
   <!-- ============ LEADERBOARD TAB ============ -->
   <section id="tab-leaderboard" class="tab-panel">
     <div class="panel">
-      <h2>Leaderboard</h2>
+      <h2>🏆 Leaderboard</h2>
       <p class="lede">Top sessions this run. Restarting the server resets it — this is a local demo store, not an account system.</p>
       <table class="lb-table" id="lbTable">
         <thead><tr><th>#</th><th>Player</th><th>Score</th><th>Best streak</th><th>Accuracy</th><th>Rounds</th></tr></thead>
@@ -146,7 +163,7 @@
   <!-- ============ MODEL STATS TAB ============ -->
   <section id="tab-model" class="tab-panel">
     <div class="panel">
-      <h2>What's actually inside the model</h2>
+      <h2>🧠 What's actually inside the model</h2>
       <p class="lede">A RandomForestClassifier trained on 14 engineered features — scope counts and
         weights, category-mismatch signals, real-world publisher-trust context (verification status,
         account age, install count), and a population-derived "how rare is this scope for this
@@ -163,7 +180,7 @@
   <!-- ============ ASSESSMENT MODE TAB ============ -->
   <section id="tab-assess" class="tab-panel">
     <div class="panel">
-      <h2>Assessment mode</h2>
+      <h2>🗂️ Assessment mode</h2>
       <p class="lede">The same model, repurposed as a real tool: paste a list of apps and the
         scopes they've requested, and get back a ranked risk report — the workflow a school IT
         coordinator could run against an actual authorized-apps export.</p>
