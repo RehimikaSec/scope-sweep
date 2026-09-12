@@ -10,6 +10,19 @@ A game that teaches OAuth-permission literacy by having players guess an app's r
 
 ---
 
+## Why this is a real problem, not a hypothetical one
+
+Third-party apps requesting broad OAuth access to a Google account — and getting rubber-stamped — is a documented, ongoing attack surface, not an invented premise:
+
+- **The 2017 "Google Docs" OAuth worm.** A fake app impersonated Google Docs, got users to grant it OAuth access to Gmail and contacts, then auto-emailed everyone in each victim's contact list — spreading to roughly a million Gmail accounts in hours. That's the exact `contacts.readonly` + `gmail.send` dangerous-combination pattern this project's scoring rule flags. ([BankInfoSecurity](https://www.bankinfosecurity.com/attackers-unleash-oauth-worm-via-google-docs-app-a-9888), [CNBC](https://www.cnbc.com/2017/05/04/gmail-google-hack-phishing-attack.html), [Auth0](https://auth0.com/blog/all-you-need-to-know-about-the-google-docs-phishing-attack/))
+- **Google itself has changed policy specifically for schools.** Google Workspace for Education now requires domain admins to explicitly review and approve third-party OAuth apps' scope requests, instead of allowing them through by default — a direct response to this exact risk in exactly this sector. ([Google Workspace Updates](https://workspaceupdates.googleblog.com/2023/08/third-party-app-access-enhancements-for-google-workspace-edu.html), [National Law Review](https://natlawreview.com/article/changes-google-workspace-education-terms-service-prompts-audits-third-party))
+- **There's a real commercial market built around this exact gap.** Vendors like ManagedMethods sell products specifically to monitor risky OAuth grants inside K-12 Google Workspace domains — because districts kept getting caught out by the rubber-stamping behavior this project's premise describes. ([ManagedMethods](https://managedmethods.com/blog/oauth-risks-and-solutions-for-k-12/))
+- **It's an active, current threat, not a stale 2017 story.** OAuth consent phishing targeting schools is still being reported in 2026, and industry research this year describes OAuth-based risk as growing, partly driven by a new wave of AI tools requesting broad account access. ([Security Boulevard](https://securityboulevard.com/2026/07/modern-google-oauth-phishing-what-k-12-schools-need-to-know/), [Material Security study](https://finance.yahoo.com/technology/ai/articles/material-security-study-reveals-oauth-120000050.html))
+
+The apps in this project are synthetic (see [Limitations](#limitations-and-roadmap)), but the problem they model — a school district accumulating unreviewed, over-permissioned third-party OAuth grants — is real and documented.
+
+---
+
 ## How it works
 
 ### 1. The scope catalog and ground-truth rule
